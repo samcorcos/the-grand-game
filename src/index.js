@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import UniversalRouter from 'universal-router'
 import './index.css';
-import App from './App';
-import Players from './Players'
 import registerServiceWorker from './registerServiceWorker';
+import {
+  Dashboard,
+  Players,
+  Allocation,
+} from './views'
 
 const routes = [
-  { path: '/', action: () => <App /> },
+  { path: '/', action: () => <Dashboard /> },
   { path: '/players', action: () => <Players /> },
-  { path: '/two', action: () => <h1>Page Two</h1> },
+  { path: '/allocation', action: () => <Allocation /> },
 ]
 
 const router = new UniversalRouter(routes)

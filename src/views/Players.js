@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
-import base from './base'
+import {
+  base,
+} from '../utils'
+import {
+  SelectCountry,
+  Nav,
+} from '../components'
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +33,7 @@ class Players extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.playersRef = base.syncState('players', {
       context: this,
       state: 'players',
@@ -43,9 +49,7 @@ class Players extends Component {
 
     return (
       <Container>
-        <Row>
-          <a href="/">Dashboard</a>
-        </Row>
+        <Nav />
         <Row>
           <Cell>
             <h1>Name</h1>
@@ -54,13 +58,27 @@ class Players extends Component {
             <h1>Country</h1>
           </Cell>
           <Cell>
-            <h1>Something?</h1>
+            <h1>Role</h1>
           </Cell>
         </Row>
         {Object.keys(this.state.players).map(key => (
           <Row key={`players-${key}`}>
             <Cell>
               {this.state.players[key].name}
+            </Cell>
+            <Cell>
+              <SelectCountry 
+                value={this.state.players[key].country}
+                onChange={v => this.setState({
+                  players: {
+                    [key]: {
+                      country: v,
+                    }
+                  }
+                })} />
+            </Cell>
+            <Cell>
+              {this.state.players[key].role}
             </Cell>
           </Row>
         ))}

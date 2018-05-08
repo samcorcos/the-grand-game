@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
-import get from 'lodash.get'
-import base from './base'
+import {
+  base,
+} from '../utils'
+import {
+  SelectCountry, 
+  Nav,
+} from '../components'
 
 const Container = styled.div`
   display: flex;
@@ -20,17 +25,7 @@ const Cell = styled.div`
   width: 20%;
 `
 
-// fills in the owner name based on id
-const getOwner = (self, zoneKey) => {
-  const playerId = self.state.zones[zoneKey].playerId
-  if (playerId) {
-    return self.state.players[playerId].name
-  } 
-  // if there is no owner, return 'N/A'
-  return 'N/A'
-}
-
-class App extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -39,7 +34,7 @@ class App extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.zoneRef = base.syncState('zones', {
       context: this,
       state: 'zones',
@@ -61,9 +56,7 @@ class App extends Component {
 
     return (
       <Container>
-        <Row>
-          <a href="/players">Players</a>
-        </Row>
+        <Nav />
         <Row>
           <Cell>
             <h1>Zone</h1>
@@ -84,7 +77,16 @@ class App extends Component {
               {this.state.zones[key].gdp}
             </Cell>
             <Cell>
-              {getOwner(this, key)}
+              <SelectCountry 
+                value={this.state.zones[key].owner} 
+                // when someone selects a new country, set the value
+                onChange={v => this.setState({
+                  zones: {
+                    [key]: {
+                      owner: v,
+                    }
+                  }
+                })} />
             </Cell>
           </Row>
         ))}
@@ -93,4 +95,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Dashboard;
